@@ -509,10 +509,17 @@ function updatePositions() {
 
 
   var items = document.getElementsByClassName('mover'); // used getElementsByClassName here
-  var scrollPos = document.body.scrollTop / 1250; // create var outside of for loop to calculate scroll position
 
+  var phaseArray = []; // create an array for the 5 values of phase
+  var top = document.body.scrollTop / 1250; // create var outside of for loop to calculate scroll position
+
+  // Create for loop to create values for the phaseArray as per suggestion of my reviewer
+  for (var i = 0; i < 5; i++) {
+    phaseArray.push(Math.sin(top + i));
+  }
+  var phase;
   for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin(scrollPos + i % 5);
+    phase = phaseArray[i % 5];
     //var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
 
@@ -536,6 +543,7 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
+  var movingPizzas = document.getElementById("movingPizzas1"); //move this var outside the loop to not  go into the dom on each iteration, sugestion of reviewer
   // changed the number of pizzas draw to 50 from 200
   for (var i = 0; i < 30; i++) {
     var elem = document.createElement('img');
@@ -545,7 +553,7 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.querySelector("#movingPizzas1").appendChild(elem);
+    movingPizzas.appendChild(elem);
   }
   updatePositions();
 });
